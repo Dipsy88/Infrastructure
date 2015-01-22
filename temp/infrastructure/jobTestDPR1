@@ -1,0 +1,26 @@
+#!/bin/bash
+# Job name:
+#SBATCH --job-name=jobTestDPR1
+#
+#Project:
+#SBATCH --account=uio
+#
+#Wall clock limit
+#SBATCH --time=80:00:0
+#
+#Max memory usage:
+#SBATCH --mem-per-cpu=2G
+
+source /cluster/bin/jobsetup
+module purge  # clear any inherited modules
+
+## Copy input files to the work directory
+cp -R /usit/abel/u1/dipeshpr/project/1/Abdel $SCRATCH
+
+# DO some work
+cd $SCRATCH
+cd Abdel
+chmod +x AbelKongsbergCases.jar
+java -jar AbelKongsbergCases.jar
+cd ..
+cp -R Abdel /usit/abel/u1/dipeshpr/result/1
