@@ -6,7 +6,7 @@
 #SBATCH --account=uio
 #
 #Wall clock limit
-#SBATCH --time=0:10:0
+#SBATCH --time=00:05:00
 #
 #Max memory usage:
 #SBATCH --mem-per-cpu=700M
@@ -23,4 +23,5 @@ cd task
 chmod +x jar1.jar
 java -jar jar1.jar
 sleep 8
-cp result.txt /usit/abel/u1/dipeshpr/AppResult
+mv result.txt out.txt
+cp out.txt /usit/abel/u1/dipeshpr/AppResult

@@ -1,0 +1,16 @@
+Filename 	Time
+
+task3	10.0
+task4	5.0
+task5	5.0
+task6	5.0
+task8	5.0
+task9	5.0
+task10	5.0
+task11	5.0
+task12	5.0
+task13	5.0
+task14	5.0
+task15	5.0
+task16	5.0
+task17	5.0

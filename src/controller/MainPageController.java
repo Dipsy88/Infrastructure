@@ -5,12 +5,13 @@ import java.awt.EventQueue;
 import view.ExecutionPage;
 import view.JobPage;
 import view.MainPage;
+import view.Norstore;
 
 public class MainPageController {
 	public MainPage mainPage;
 	public ExecutionPage executionPage;
 	public JobPage jobPage;
-	
+	public Norstore norstore;
 	
 	
 	public void runMainPage(){
@@ -32,6 +33,20 @@ public class MainPageController {
 				try {		   
 					executionPage = new ExecutionPage();
 					executionPage.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public void runNorStore(){		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {		   
+					norstore = new Norstore();
+					norstore.frame.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

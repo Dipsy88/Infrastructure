@@ -158,7 +158,7 @@ public class ExecuteCase {
 		         if(ent.indexOf("/")>0)
 		         {
 		         String fil=ent.substring(0,ent.indexOf("/"));
-		         System.out.println(fil);
+		       //  System.out.println(fil);
 		         String dirNew = dir + "/" + fil;
 		         File local=new File(dirNew);
 		         if(!local.exists())
@@ -169,7 +169,7 @@ public class ExecuteCase {
 		        	 
 		        	 int index = ent.indexOf("/",1);
 			         String fil=ent.substring(1,index);
-			         System.out.println(fil);
+			    //     System.out.println(fil);
 			         String dirNew = dir + "/" + fil;
 			         File local=new File(dirNew);
 			         if(!local.exists())
@@ -179,7 +179,7 @@ public class ExecuteCase {
 		         {
 		         int n=ent.length();
 		         String fil1=ent.substring(ent.lastIndexOf("/")+1,n);
-		         System.out.println(fil1);
+		      //   System.out.println(fil1);
 		         JarEntry file = (JarEntry) objectFile;
 //		          extract(jar,ent);  
 		         
@@ -243,10 +243,10 @@ public class ExecuteCase {
 	
 	 public static String proc(Object obj)
      {
-     JarEntry entry = (JarEntry)obj;
-     String name = entry.getName();
-     System.out.println("\nEntry Name: "+name);
-     return(name);
+	     JarEntry entry = (JarEntry)obj;
+	     String name = entry.getName();
+	    // System.out.println("\nEntry Name: "+name);
+	     return(name);
      }
 
      public static void extract(JarFile jar,String entryName)throws IOException,ZipException{

@@ -33,7 +33,7 @@ public class MainPage {
 
 	public JFrame frame;
 
-	private JButton btnModelbasedTestingEnvironment, btnNotur, btnCancel;
+	private JButton btnModelbasedTestingEnvironment, btnNotur, btnNorStore, btnCancel;
 	
 	private AbelController abelController;
 	private MainPageController mainPageController;
@@ -69,23 +69,19 @@ public class MainPage {
 		frame.setContentPane(background);
 //		frame.getContentPane().setLayout(null);
 		 
-
+		
 		btnNotur = new JButton("Notur Infrastructure");
 		
 		btnNotur.setBounds(183, 134, 237, 23);
 		frame.getContentPane().add(btnNotur);
 		
-		JButton btnNewButton = new JButton("Norstore Infrastructure");
-		btnNewButton.setBounds(183, 205, 237, 23);
-		frame.getContentPane().add(btnNewButton);
+		btnNorStore = new JButton("Norstore Infrastructure");
+	
+		btnNorStore.setBounds(183, 205, 237, 23);
+		frame.getContentPane().add(btnNorStore);
 		
-		btnModelbasedTestingEnvironment = new JButton("Model-Based Testing Environment");
-		btnModelbasedTestingEnvironment.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				frame.dispose();
-				
-			}
-		});
+		btnModelbasedTestingEnvironment = new JButton("Model-Based Testing");
+		
 		btnModelbasedTestingEnvironment.setBounds(183, 62, 237, 23);
 		frame.getContentPane().add(btnModelbasedTestingEnvironment);
 		
@@ -95,7 +91,7 @@ public class MainPage {
 		frame.getContentPane().add(btnCancel);
 		
 		
-		
+		frame.setResizable(true);
 	}
 	
 	public void setUpListeners(){
@@ -110,6 +106,13 @@ public class MainPage {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.dispose();
 				mainPageController.runJobPage();
+			}
+		});
+		
+		btnNorStore.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				mainPageController.runNorStore();
 			}
 		});
 		

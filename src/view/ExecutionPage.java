@@ -94,19 +94,16 @@ public class ExecutionPage {
 			public void actionPerformed(ActionEvent e) {
 				//String number = "1";
 				try {
-//					executePageController.createJar();
-//					abelController.writeJobParam(AbelController.getFileName(), "1");
-//					executePageController.copyProgram();
-//					remoteController.delete("App",AbelController.getDirName());
-//					remoteController.sendFiles("App",AbelController.getDirName());
-//					Thread.currentThread();
-//					Thread.sleep(5000);
-//					remoteController.executeJob("App", AbelController.getDirName());
+					executePageController.createJar();
+					abelController.writeJobParam(AbelController.getFileName(), "1");
+					abelController.addInfoExecution(AbelController.getDirName(), AbelController.getExecutionTime());
 					
-					remoteController.executeJob("App", "task25");
-							
-							
-							
+					executePageController.copyProgram();
+					remoteController.delete("App",AbelController.getDirName());
+					remoteController.sendFiles("App",AbelController.getDirName());
+					
+					remoteController.executeJob("App", AbelController.getDirName());
+				
 					frame.dispose();
 					mainPageController.runMainPage();
 				} catch (Exception e1) {
@@ -119,10 +116,26 @@ public class ExecutionPage {
 		
 		btnRun2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String number = "2";
-				execute (number);
+				//String number = "1";
+				try {
+					executePageController.createJar();
+					abelController.writeJobParam(AbelController.getFileName(), "2");
+					abelController.addInfoExecution(AbelController.getDirName(), AbelController.getExecutionTime());
+					
+					executePageController.copyProgram();
+					remoteController.delete("App",AbelController.getDirName());
+				//	remoteController.sendFiles("App",AbelController.getDirName());
+					//remoteController.executeJob("App", AbelController.getDirName());
+					
+					frame.dispose();
+					mainPageController.runMainPage();
 
+			}catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
+			//execute (number);
+		}
 		});
 		
 		btnDelete.addActionListener(new ActionListener() {

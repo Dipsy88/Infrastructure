@@ -36,9 +36,11 @@ public class SSHManager {
 	  private int intConnectionPort;
 	  private String strPassword;
 	  private Session sesConnection;
+	  private Session sesConnection2;
 	  private int intTimeOut;
 	  
-
+	  private Session norStoreConnection;
+	  
 	
 	  private void doCommonConstructorActions(String userName, 
 		       String password, String connectionIP, String knownHostsFileName)
@@ -130,6 +132,30 @@ public class SSHManager {
 
 		     return errorMessage;
 		  }
+	  
+	  public String connectNorStore(String userName2, String password2)
+	  {
+	     String errorMessage = null;
+	   
+	     try
+	     {
+	        sesConnection2 = jschSSHChannel.getSession(userName2, 
+	            strConnectionIP, intConnectionPort);
+	        sesConnection2.setPassword(password2);
+	        // UNCOMMENT THIS FOR TESTING PURPOSES, BUT DO NOT USE IN PRODUCTION
+	        // sesConnection.setConfig("StrictHostKeyChecking", "no");
+	        
+	        sesConnection2.setConfig("StrictHostKeyChecking", "no");
+	        sesConnection2.connect(intTimeOut);
+	        
+	     }
+	     catch(JSchException jschX)
+	     {
+	        errorMessage = jschX.getMessage();
+	     }
+
+	     return errorMessage;
+	  }
 
 	  public void execute(File localDir, String parent, String dirName) throws Exception{
 //		  Session session = null;
@@ -186,8 +212,6 @@ public class SSHManager {
 //			   }
 //			   
 //				ch.disconnect();
-				
-				
 				ChannelShell channelShell = (ChannelShell) sesConnection.openChannel("shell");
 				
 				OutputStream ops = channelShell.getOutputStream();
@@ -198,8 +222,7 @@ public class SSHManager {
 		        ps.println("cd "+task);
 		        ps.println("sbatch jobTemp");
 		        InputStream in=channelShell.getInputStream();
-		         byte[] bt=new byte[1024];
-
+		        byte[] bt=new byte[1024];
 
 		         while(true)
 		         {
@@ -229,6 +252,8 @@ public class SSHManager {
 				e.printStackTrace();
 			}
 	  }
+	  
+	  //Copy files to Abel
 	  public void copyFiles(ChannelSftp channelSftp, File sourcePath, String destination, String destDir) throws Exception{	  
 		  File[] files = iterateFiles(sourcePath);
 		  
@@ -259,6 +284,73 @@ public class SSHManager {
 					channelSftp.put(file.getAbsolutePath(), destination+ "/"+ destDir + "/");
 				}
 			}
+		  
+	  }
+	  
+	  //check the files after execution
+	  public void checkFile(String destParent, String task) throws SftpException, JSchException, IOException{
+		  ChannelShell channelShell = (ChannelShell) sesConnection.openChannel("shell");
+			
+		  OutputStream ops = channelShell.getOutputStream();
+	      PrintStream ps = new PrintStream(ops, true);
+	     
+	      channelShell.connect();
+	      ps.println("cd "+destParent);
+	      ps.println("ls "+task);
+	      
+	      
+		  
+		  InputStream in=channelShell.getInputStream();
+		  byte[] bt=new byte[1024];
+
+	      while(true)
+	      {
+
+	    	  while(in.available()>0)
+	    	  {
+	    		  int i=in.read(bt, 0, 1024);
+	    		  if(i<0)
+	    			  break;
+	    		  String str=new String(bt, 0, i);
+	          //displays the output of the command executed.
+	            System.out.print(str);
+
+
+	    	  }
+	    	  if(channelShell.isClosed())
+	    	  {
+
+		             break;
+		       }
+	    	  try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+  
+		        channelShell.disconnect();
+		  	}
+
+	  }
+	  
+	  public void copyFileToHome(){
+		try {
+			Channel channelNotur = sesConnection.openChannel("sftp");
+			
+			Channel channelNorStore = sesConnection2.openChannel("sftp");
+			
+			channelNotur.connect();
+			channelNorStore.connect();
+			
+			
+			
+		} catch (JSchException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	
 		  
 	  }
 	  

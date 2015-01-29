@@ -18,6 +18,8 @@ import view.JobPage;
 
 public class AbelController {
 
+	
+	private File executionFile;
 	private boolean defaultFile = false;
 	private int dirNumber;
 	private static File dirPath;
@@ -26,6 +28,8 @@ public class AbelController {
 		return dirName;
 	}
 
+	private static double executionTime;
+	
 	public static void setDirName(String dirName) {
 		AbelController.dirName = dirName;
 	}
@@ -42,6 +46,10 @@ public class AbelController {
 	private static File fileName;
 	public static File getFileName() {
 		return fileName;
+	}
+	
+	public static double getExecutionTime(){
+		return executionTime;
 	}
 
 	public static void setFileName(File fileName) {
@@ -126,16 +134,7 @@ public class AbelController {
 
 	}
 	
-	public void defaultJob() throws Exception{
-		changeDirNum();
-		defaultFile= true;
-		boolean check =checkFile();
-		if (check == false)
-			fileName.delete();
-		
-		File source = new File("template/defaultJob");
-		Files.copy(source.toPath(), fileName.toPath());
-	}
+
 	
 	public int readDirNum() throws NumberFormatException, IOException{
 		int counter=0;
@@ -167,8 +166,9 @@ public class AbelController {
 	
 	public Job readJob() throws Exception{
 		try {
-			FileWriter changeNum= new FileWriter(fileName.getAbsoluteFile(),true);
-			BufferedReader in = new BufferedReader(new FileReader(fileName));
+			//FileWriter changeNum= new FileWriter(fileName.getAbsoluteFile(),true);
+			File source = new File("template/defaultJob");
+			BufferedReader in = new BufferedReader(new FileReader(source));
 			String line;
 			while ((line = in.readLine()) != null){
 				StringBuilder result = new StringBuilder();
@@ -204,7 +204,7 @@ public class AbelController {
 		 return job;
 	}
 	
-	//Write from a new file
+	//Read and write in different files
 //	public void writeJob(String projectFolder) throws Exception{
 //		if (!defaultFile)
 //			changeDirNum();
@@ -267,8 +267,8 @@ public class AbelController {
 		List<String> lines = new ArrayList<String>();
 	    String line = null;
 		try {
-			//BufferedReader in = new BufferedReader(new FileReader("template/job.txt"));
-			BufferedReader in = new BufferedReader(new FileReader(fileName));
+			BufferedReader in = new BufferedReader(new FileReader("template/defaultJob"));
+			//BufferedReader in = new BufferedReader(new FileReader(fileName));
 			
 			
 			while ((line = in.readLine()) != null){
@@ -276,20 +276,24 @@ public class AbelController {
 			    //String[] details = line.split("\t");
    	
 				if (line.contains("#SBATCH --job-name"))
-					line =line.replace("jobTestDPR7a",job.getJobName());				    	
+					line =line.replace("jobTemp",job.getJobName());				    	
 			    else if (line.contains("#SBATCH --account"))
 			    	line =line.replace("uio",job.getAccount());		
-			    else if (line.contains("SBATCH --time"))
-			    	line =line.replace("5:00:0",job.getExecutionTimeHour()+ ":" + job.getExecutionTimeMinute() + ":" + job.getExecutionTimeSecond());	
-				
+			    else if (line.contains("SBATCH --time")){
+			    	line =line.replace("0:10:0",job.getExecutionTimeHour()+ ":" + job.getExecutionTimeMinute() + ":" + job.getExecutionTimeSecond());	
+			    	setExecutionTime(job.getExecutionTimeHour(), job.getExecutionTimeMinute(), job.getExecutionTimeSecond());
+			    }
 			    else if (line.contains("#SBATCH --mem-per-cpu"))
 			    	line =line.replaceAll("700M",job.getMemory()+ job.getMemoryUnit());	
 			    else if (line.contains("cp -R /usit/abel/"))
-			    	line =line.replace("App/",projectFolder +"/"+dirName);
+			    	line =line.replace("App/", projectFolder +"/"+dirName);
 			    else if (line.contains("cd task"))
 			    	line =line.replace("task", dirName);
-			    else if (line.contains("cp -R task /usit/abel"))
-			    	line =line.replace("task /usit/abel/u1/dipeshpr/result/7/a", dirName + " /usit/abel/u1/dipeshpr/" +projectFolder +"/"+dirName +"/result.txt");
+			
+			    else if (line.contains("mv result.txt out.txt"))
+			    	line = line.replace("out.txt", "result"+dirNumber+".txt");
+			    else if (line.contains("cp out.txt /usit/abel/u1/dipeshpr/AppResult"))
+		    	line =line.replace("out.txt","result"+dirNumber+".txt");
 			    
 			    lines.add(line);
 			    lines.add("\n");
@@ -312,6 +316,12 @@ public class AbelController {
 		}		    
 		
 	}
+	
+	//Get execution time for the job
+	public void setExecutionTime(int i, int j, int k){
+		executionTime = i * 60d + j + k/60d;	
+	}
+	
 	
 	//Write and read the same file
 		public void writeJobParam(File fileName,String param) throws Exception{		
@@ -350,6 +360,32 @@ public class AbelController {
 			}		    
 			
 		}
+		
+		// write execution info in another file to read
+		public void addInfoExecution(String name, double time) throws IOException{
+			createExecutionFile();
+		
+			FileWriter fw = new FileWriter(executionFile.getAbsoluteFile(), true);
+			BufferedWriter file = new BufferedWriter(fw);
+			file.write(name + "\t" + time + "\n" );
+			file.flush();
+			file.close();
+		}
 	
+		
+		public void createExecutionFile() throws IOException{
+			executionFile = new File("temp/execution/executed.txt");
+
+			// if file does not exists, then create it
+			if (!executionFile.exists()) {
+				executionFile.createNewFile();
+				FileWriter fw = new FileWriter(executionFile.getAbsoluteFile());
+				BufferedWriter file = new BufferedWriter(fw);
+				file.write("Filename \t" + "Time\n" );
+				file.flush();
+				file.close();
+			}
+
+		}
 
 }

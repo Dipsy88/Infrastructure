@@ -80,58 +80,58 @@ public class JobPage {
 		
 		btnCancel = new JButton("Cancel");
 		
-		btnCancel.setBounds(203, 281, 89, 23);
+		btnCancel.setBounds(159, 281, 89, 23);
 		frame.getContentPane().add(btnCancel);
 		
 		btnDefault = new JButton("Default");
 		
-		btnDefault.setBounds(370, 281, 89, 23);
+		btnDefault.setBounds(297, 281, 89, 23);
 		frame.getContentPane().add(btnDefault);
 		
 		textJobName = new JTextField();
-		textJobName.setBounds(227, 49, 103, 20);
+		textJobName.setBounds(227, 49, 150, 20);
 		frame.getContentPane().add(textJobName);
 		textJobName.setColumns(10);
 		
 		textAccount = new JTextField();
-		textAccount.setBounds(227, 104, 103, 20);
+		textAccount.setBounds(227, 104, 150, 20);
 		frame.getContentPane().add(textAccount);
 		textAccount.setColumns(10);
 		
 		textHour = new JTextField();
-		textHour.setBounds(227, 158, 26, 20);
+		textHour.setBounds(227, 158, 37, 20);
 		frame.getContentPane().add(textHour);
 		textHour.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("H");
-		lblNewLabel.setBounds(256, 161, 21, 14);
+		lblNewLabel.setBounds(265, 161, 21, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
 		textMin = new JTextField();
-		textMin.setBounds(271, 158, 26, 20);
+		textMin.setBounds(279, 158, 37, 20);
 		frame.getContentPane().add(textMin);
 		textMin.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("M");
-		lblNewLabel_1.setBounds(301, 161, 15, 14);
+		lblNewLabel_1.setBounds(315, 161, 15, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		textSec = new JTextField();
-		textSec.setBounds(314, 158, 26, 20);
+		textSec.setBounds(328, 158, 37, 20);
 		frame.getContentPane().add(textSec);
 		textSec.setColumns(10);
 		
 		textMemory = new JTextField();
-		textMemory.setBounds(225, 214, 54, 20);
+		textMemory.setBounds(225, 214, 67, 20);
 		frame.getContentPane().add(textMemory);
 		textMemory.setColumns(10);
 		
 		comboBoxMemoryUnit = new JComboBox();
-		comboBoxMemoryUnit.setBounds(306, 214, 46, 20);
+		comboBoxMemoryUnit.setBounds(315, 215, 62, 20);
 		frame.getContentPane().add(comboBoxMemoryUnit);
 		
 		JLabel lblS = new JLabel("S");
-		lblS.setBounds(342, 161, 21, 14);
+		lblS.setBounds(367, 161, 21, 14);
 		frame.getContentPane().add(lblS);
 	}
 	
@@ -145,8 +145,7 @@ public class JobPage {
 	public void setUpListeners(){
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				job=addItem();
-				
+				job=addItem();				
 				abelController.setJob(job);
 				
 				try {
@@ -171,7 +170,6 @@ public class JobPage {
 		btnDefault.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					abelController.defaultJob();
 					job = abelController.readJob();
 					writeDefault();
 				} catch (Exception e) {
