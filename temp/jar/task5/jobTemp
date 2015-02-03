@@ -15,13 +15,13 @@ source /cluster/bin/jobsetup
 module purge  # clear any inherited modules
 
 ## Copy input files to the work directory
-cp -R /usit/abel/u1/dipeshpr/App/task5 $SCRATCH
+cp -R /usit/abel/u1/dipeshpr/App/ $SCRATCH
 
 # DO some work
 cd $SCRATCH
-cd task5
+cd task
 chmod +x jar1.jar
 java -jar jar1.jar 1
 sleep 8
-cp result.txt /usit/abel/u1/dipeshpr/AppResult/task5
-mv result.txt rm5.txt
+mv result.txt out.txt
+cp out.txt /usit/abel/u1/dipeshpr/AppResult

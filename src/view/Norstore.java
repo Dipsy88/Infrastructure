@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 
 import controller.MainPageController;
+import controller.NorStoreController;
 import controller.RemoteController;
 
 import java.awt.event.ActionListener;
@@ -14,11 +15,13 @@ import java.awt.event.ActionEvent;
 public class Norstore {
 
 	public JFrame frame;
-	private JButton btnGetResults;
+	private JButton btnGetResults, btnCancel, btnExit;
 	private MainPageController mainPageController;
 	private RemoteController remoteController;
+	private NorStoreController norStoreController;
 
 
+	
 
 	/**
 	 * Create the application.
@@ -31,6 +34,7 @@ public class Norstore {
 
 	
 	public void initComponents(){
+		norStoreController = new NorStoreController();
 		mainPageController = new MainPageController();
 		remoteController= new RemoteController();
 		
@@ -46,8 +50,16 @@ public class Norstore {
 		
 		btnGetResults = new JButton("Get all results");
 		
-		btnGetResults.setBounds(66, 58, 160, 23);
+		btnGetResults.setBounds(222, 92, 160, 23);
 		frame.getContentPane().add(btnGetResults);
+		
+		btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(222, 177, 160, 29);
+		frame.getContentPane().add(btnCancel);
+		
+		btnExit = new JButton("Exit");
+		btnExit.setBounds(222, 258, 160, 29);
+		frame.getContentPane().add(btnExit);
 	}
 	
 	
@@ -55,10 +67,28 @@ public class Norstore {
 	public void setUpListeners(){
 		btnGetResults.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				remoteController.checkFile("AppResult","result10.txt");			
+				try {
+					norStoreController.copyFiles();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				frame.dispose();
 				mainPageController.runMainPage();
 				
+			}
+		});
+		
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				mainPageController.runMainPage();
+			}
+		});
+		
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
 			}
 		});
 		

@@ -39,7 +39,7 @@ public class SSHManager {
 	  private Session sesConnection2;
 	  private int intTimeOut;
 	  
-	  private Session norStoreConnection;
+	 
 	  
 	
 	  private void doCommonConstructorActions(String userName, 
@@ -133,14 +133,14 @@ public class SSHManager {
 		     return errorMessage;
 		  }
 	  
-	  public String connectNorStore(String userName2, String password2)
+	  public String connectNorStore(String userName2, String password2, String connectionIP2)
 	  {
 	     String errorMessage = null;
 	   
 	     try
 	     {
 	        sesConnection2 = jschSSHChannel.getSession(userName2, 
-	            strConnectionIP, intConnectionPort);
+	        		connectionIP2, intConnectionPort);
 	        sesConnection2.setPassword(password2);
 	        // UNCOMMENT THIS FOR TESTING PURPOSES, BUT DO NOT USE IN PRODUCTION
 	        // sesConnection.setConfig("StrictHostKeyChecking", "no");
@@ -195,7 +195,8 @@ public class SSHManager {
 		}
 	  }
 	  
-	  public void sendJob(String appFolder, String task) throws SftpException, IOException, InterruptedException{
+	  public long sendJob(String appFolder, String task) throws SftpException, IOException, InterruptedException{
+		  long jobId=0;
 		  try {
 				
 //			  Channel channel = sesConnection.openChannel("exec");
@@ -235,7 +236,23 @@ public class SSHManager {
 		            String str=new String(bt, 0, i);
 		          //displays the output of the command executed.
 		            System.out.print(str);
+		            if (str.contains("batch job")){
+		            	String line = str;
+				    	String[] details = line.split("\n");
+				    	
+				    	for (String s:details){
+				    		  if (s.contains("Submitted batch job")){
+				    			 
+				    			  String[] findingId = s.split(" ");
+				    			  findingId[3] = findingId[3].replaceAll("\\r|\\n", "");
 
+				    			  findingId[3].trim();
+				    			  System.out.println(Long.valueOf(findingId[3]).longValue());
+				    			  jobId = Long.valueOf(findingId[3]).longValue();
+				    		  }
+
+				    	}
+		            }
 
 		         }
 		         if(channelShell.isClosed())
@@ -251,6 +268,7 @@ public class SSHManager {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		  return jobId;
 	  }
 	  
 	  //Copy files to Abel
@@ -288,7 +306,8 @@ public class SSHManager {
 	  }
 	  
 	  //check the files after execution
-	  public void checkFile(String destParent, String task) throws SftpException, JSchException, IOException{
+	  public boolean checkFile(String destParent, String task) throws SftpException, JSchException, IOException{
+		  boolean found = true;
 		  ChannelShell channelShell = (ChannelShell) sesConnection.openChannel("shell");
 			
 		  OutputStream ops = channelShell.getOutputStream();
@@ -314,7 +333,8 @@ public class SSHManager {
 	    		  String str=new String(bt, 0, i);
 	          //displays the output of the command executed.
 	            System.out.print(str);
-
+	            if (str.contains("No such file or directory"))
+	            		found = false;
 
 	    	  }
 	    	  if(channelShell.isClosed())
@@ -331,10 +351,10 @@ public class SSHManager {
   
 		        channelShell.disconnect();
 		  	}
-
+	      return found;
 	  }
 	  
-	  public void copyFileToHome(){
+	  public void copyFileToHome(String root, String fileName) throws Exception{
 		try {
 			Channel channelNotur = sesConnection.openChannel("sftp");
 			
@@ -343,15 +363,23 @@ public class SSHManager {
 			channelNotur.connect();
 			channelNorStore.connect();
 			
+			ChannelSftp uploadChannel = null;
+		    ChannelSftp downloadChannel = null;
+			
+		    uploadChannel = (ChannelSftp) channelNotur;
+	        downloadChannel = (ChannelSftp) channelNorStore;
+		    
+			
+			InputStream inputStream = uploadChannel.get(root+"/" + fileName);
+			
+			downloadChannel.put(inputStream,fileName);
 			
 			
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	
-		  
+
 	  }
 	  
 	  
@@ -417,5 +445,50 @@ public class SSHManager {
 	     sesConnection.disconnect();
 	  }
 
+	  public boolean checkJobCompleted(String jobId) throws IOException, JSchException{
+		  boolean completed= true;
+		  ChannelShell channelShell = (ChannelShell) sesConnection.openChannel("shell");
+			
+		  OutputStream ops = channelShell.getOutputStream();
+	      PrintStream ps = new PrintStream(ops, true);
+	     
+	      channelShell.connect();
+	      ps.println("squeue -j "+jobId);
+
+		  InputStream in=channelShell.getInputStream();
+		  byte[] bt=new byte[1024];
+
+	      while(true)
+	      {
+
+	    	  while(in.available()>0)
+	    	  {
+	    		  int i=in.read(bt, 0, 1024);
+	    		  if(i<0)
+	    			  break;
+	    		  String str=new String(bt, 0, i);
+	          //displays the output of the command executed.
+	            System.out.print(str);
+	            if (str.contains(jobId))
+	            		completed = false;
+
+	    	  }
+	    	  if(channelShell.isClosed())
+	    	  {
+
+		             break;
+		       }
+	    	  try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+  
+		        channelShell.disconnect();
+		  	}
+	      return completed;
+	  }
+	  
 	  
 }

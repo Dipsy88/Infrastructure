@@ -19,6 +19,17 @@ public class ExecutePageController {
 	}
 	
 	public void createJar() throws IOException{		
+		if (!AbelController.isDirCreated()){
+			AbelController abelController = new AbelController();
+			try {
+				
+				abelController.copyJob("App");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		executeCase.createJarFile(AbelController.getDirPath());
 		executeCase.extractJar(AbelController.getDirPath());
 	}

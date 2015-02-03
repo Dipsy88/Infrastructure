@@ -16,14 +16,18 @@ public class RemoteController {
 	
 	//Norstore
 	String userNameNorStore= "dipesh";
-	String passwordNorStore = "dipsY.77";
-	SSHManager instanceNorStore;
+	String passwordNorStore = "Dipesh@77";
+	String connectionIPNorStore = "129.240.188.214";	
+
+
 	String errorMessageNorStore;
+	private NorStoreController norStoreController;
 	
 	
-	public void connectNorStore(){
-		instanceNorStore = new SSHManager(userName, password, connectionIP);
-		this.errorMessage = instanceNorStore.connectNorStore(userNameNorStore, passwordNorStore);
+	public void connectBoth(){
+		instance= new SSHManager(userName, password, connectionIP);
+		this.errorMessageNorStore = instance.connectNorStore(userNameNorStore, passwordNorStore, connectionIPNorStore );
+		this.errorMessage = instance.connect();
 
 	}
 	
@@ -37,7 +41,7 @@ public class RemoteController {
 	public void sendFiles(String parent, String dirName ){
 		connect();
 		File localDir= new File("temp/jar/"+dirName);
-		if (errorMessage==null){
+		if (errorMessage==null && errorMessageNorStore == null){
 			try {
 				instance.execute(localDir, parent, dirName);
 			} catch (Exception e) {
@@ -49,18 +53,21 @@ public class RemoteController {
 		}
 	}
 	
-	public void executeJob(String appFolder, String task){
+	public long executeJob(String appFolder, String task){
+		long jobId=0;
 		connect();
 		if (errorMessage==null){
 			try {
-				instance.sendJob(appFolder, task);
+				jobId= instance.sendJob(appFolder, task);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
-		
+			
 			instance.close();
+		
 		}
+		return jobId;
 	}
 	
 	public void delete(String parent, String dirName){
@@ -76,12 +83,12 @@ public class RemoteController {
 		}
 	}
 	
-	public void copyFileNorStore(){
-		connectNorStore();
-		connect();
-		if (errorMessage==null){
+	public void copyFileNorStore(String root, String fileName){
+		connectBoth();
+		if (errorMessage==null && errorMessageNorStore==null){
 			try {
-				instance.copyFileToHome();
+				
+				instance.copyFileToHome(root, fileName);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -91,11 +98,12 @@ public class RemoteController {
 		
 	}
 	
-	public void checkFile(String destParent, String task){
+	public boolean checkFile(String destParent, String task){
 		connect();	
+		boolean found= false;
 		if (errorMessage==null){
 			try {
-				instance.checkFile(destParent, task);
+				found=instance.checkFile(destParent, task);
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -103,7 +111,26 @@ public class RemoteController {
 			} 
 		
 		}
+		return found;
 	}
+	
+	public boolean checkJobCompleted (String jobId){
+		connect();	
+		boolean found= false;
+		if (errorMessage==null){
+			try {
+				found=instance.checkJobCompleted(jobId);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		
+		}
+		return found;
+		
+	}
+	
 
 	
 }

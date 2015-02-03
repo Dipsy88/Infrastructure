@@ -75,17 +75,17 @@ public class JobPage {
 		
 		btnSave = new JButton("Save");
 		
-		btnSave.setBounds(35, 281, 89, 23);
+		btnSave.setBounds(21, 281, 89, 23);
 		frame.getContentPane().add(btnSave);
 		
 		btnCancel = new JButton("Cancel");
 		
-		btnCancel.setBounds(159, 281, 89, 23);
+		btnCancel.setBounds(136, 281, 89, 23);
 		frame.getContentPane().add(btnCancel);
 		
-		btnDefault = new JButton("Default");
+		btnDefault = new JButton("Default settings");
 		
-		btnDefault.setBounds(297, 281, 89, 23);
+		btnDefault.setBounds(242, 281, 144, 23);
 		frame.getContentPane().add(btnDefault);
 		
 		textJobName = new JTextField();

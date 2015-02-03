@@ -18,7 +18,17 @@ import view.JobPage;
 
 public class AbelController {
 
-	
+	private static boolean dirCreated = false;
+	public static void setDirCreated(boolean dirCreated) {
+		AbelController.dirCreated = dirCreated;
+	}
+
+	public static boolean isDirCreated() {
+		return dirCreated;
+	}
+
+
+
 	private File executionFile;
 	private boolean defaultFile = false;
 	private int dirNumber;
@@ -254,6 +264,38 @@ public class AbelController {
 //		
 //	}
 	
+	//to have file immediately after pressing execute
+	public void copyJob(String projectFolder) throws Exception{
+		if (!defaultFile)
+			changeDirNum();
+		//File dirName = new File("temp/jar/task"+dirNumber);
+		dirName = "task"+dirNumber;
+		
+		dirPath = new File("temp/jar/task"+dirNumber);	
+		if (!dirPath.exists())
+			createDir(dirPath);
+
+		
+
+		
+		File source = new File("template/defaultJob");
+		fileName = new File("temp/jar/"+dirName+"/jobTemp");
+		
+		if (fileName.exists()) {
+			fileName.delete();
+		}
+		
+		try {
+			Files.copy(source.toPath(), fileName.toPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		dirCreated = true;
+	}
+	
+	
 	//Write and read the same file
 	public void writeJob(String projectFolder) throws Exception{
 		if (!defaultFile)
@@ -309,7 +351,7 @@ public class AbelController {
 	        out.close();
 			
 			changeJob.close();
-			
+			dirCreated = true;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -362,26 +404,30 @@ public class AbelController {
 		}
 		
 		// write execution info in another file to read
-		public void addInfoExecution(String name, double time) throws IOException{
+		public void addInfoExecution(String name, double time, long jobId) throws IOException{
 			createExecutionFile();
 		
+			long currentTime = System.currentTimeMillis()/1000;
+			long executedTime = (long) (currentTime+ time*60);
+			
+			System.out.println("current time is " + currentTime);
+			System.out.println("executed after "+executedTime);
+			
 			FileWriter fw = new FileWriter(executionFile.getAbsoluteFile(), true);
 			BufferedWriter file = new BufferedWriter(fw);
-			file.write(name + "\t" + time + "\n" );
+			file.write(executedTime + "\t" + name + "\t" + jobId + "\n");
 			file.flush();
 			file.close();
 		}
-	
-		
+			
 		public void createExecutionFile() throws IOException{
-			executionFile = new File("temp/execution/executed.txt");
-
+			executionFile = new File("temp/execution/executed.txt");			
 			// if file does not exists, then create it
 			if (!executionFile.exists()) {
 				executionFile.createNewFile();
 				FileWriter fw = new FileWriter(executionFile.getAbsoluteFile());
 				BufferedWriter file = new BufferedWriter(fw);
-				file.write("Filename \t" + "Time\n" );
+				file.write("Time \t" + "Filename\t" + "JobId\n");
 				file.flush();
 				file.close();
 			}

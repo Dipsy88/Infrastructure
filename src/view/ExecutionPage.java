@@ -19,7 +19,7 @@ import java.net.URL;
 public class ExecutionPage {
 
 	public JFrame frame;
-	private JButton btnExecute, btnDelete;
+	private JButton btnDelete;
 	private RemoteController remoteController;
 	private JButton btnRun1;
 	private JButton btnRun2;
@@ -29,6 +29,7 @@ public class ExecutionPage {
 	public MainPageController mainPageController;
 	public ExecutePageController executePageController;
 	private AbelController abelController;
+	private JButton btnExit;
 
 	/**
 	 * Create the application.
@@ -56,39 +57,33 @@ public class ExecutionPage {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		btnExecute = new JButton("Connect");
-		
-		btnExecute.setBounds(214, 171, 161, 23);
-		frame.getContentPane().add(btnExecute);
-		
 		btnDelete = new JButton("Delete files");
 		
-		btnDelete.setBounds(214, 230, 161, 23);
+		btnDelete.setBounds(214, 173, 161, 23);
 		frame.getContentPane().add(btnDelete);
 		
 		btnRun1 = new JButton("Execute one case");
 		
-		btnRun1.setBounds(214, 53, 161, 23);
+		btnRun1.setBounds(214, 46, 161, 23);
 		frame.getContentPane().add(btnRun1);
 		
 		btnRun2 = new JButton("Execute two cases");
 		
-		btnRun2.setBounds(214, 112, 161, 23);
+		btnRun2.setBounds(214, 106, 161, 23);
 		frame.getContentPane().add(btnRun2);
 		
 		btnCancel = new JButton("Cancel");
 		
-		btnCancel.setBounds(214, 288, 161, 23);
+		btnCancel.setBounds(214, 236, 161, 23);
 		frame.getContentPane().add(btnCancel);
+		
+		btnExit = new JButton("Exit");
+		
+		btnExit.setBounds(214, 293, 161, 29);
+		frame.getContentPane().add(btnExit);
 	}
 	
 	public void setUpListeners(){
-		btnExecute.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				remoteController.delete("App",AbelController.getDirName());
-				remoteController.sendFiles("App",AbelController.getDirName());
-			}
-		});
 		
 		btnRun1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -96,14 +91,15 @@ public class ExecutionPage {
 				try {
 					executePageController.createJar();
 					abelController.writeJobParam(AbelController.getFileName(), "1");
-					abelController.addInfoExecution(AbelController.getDirName(), AbelController.getExecutionTime());
-					
+
 					executePageController.copyProgram();
 					remoteController.delete("App",AbelController.getDirName());
 					remoteController.sendFiles("App",AbelController.getDirName());
 					
-					remoteController.executeJob("App", AbelController.getDirName());
-				
+					long jobId= remoteController.executeJob("App", AbelController.getDirName());
+					abelController.addInfoExecution(AbelController.getDirName(), AbelController.getExecutionTime(), jobId);
+					AbelController.setDirCreated(false);
+					
 					frame.dispose();
 					mainPageController.runMainPage();
 				} catch (Exception e1) {
@@ -116,16 +112,18 @@ public class ExecutionPage {
 		
 		btnRun2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//String number = "1";
+				//String number = "2";
 				try {
 					executePageController.createJar();
 					abelController.writeJobParam(AbelController.getFileName(), "2");
-					abelController.addInfoExecution(AbelController.getDirName(), AbelController.getExecutionTime());
-					
+		
 					executePageController.copyProgram();
 					remoteController.delete("App",AbelController.getDirName());
-				//	remoteController.sendFiles("App",AbelController.getDirName());
-					//remoteController.executeJob("App", AbelController.getDirName());
+					remoteController.sendFiles("App",AbelController.getDirName());
+			
+					long jobId= remoteController.executeJob("App", AbelController.getDirName());
+					abelController.addInfoExecution(AbelController.getDirName(), AbelController.getExecutionTime(), jobId);
+					AbelController.setDirCreated(false);
 					
 					frame.dispose();
 					mainPageController.runMainPage();
@@ -149,6 +147,12 @@ public class ExecutionPage {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
 				mainPageController.runMainPage();
+			}
+		});
+		
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
 			}
 		});
 	}
