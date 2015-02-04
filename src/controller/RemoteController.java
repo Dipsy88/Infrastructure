@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import com.jcraft.jsch.ChannelSftp;
 
@@ -70,11 +71,32 @@ public class RemoteController {
 		return jobId;
 	}
 	
+	//delete individual folder
 	public void delete(String parent, String dirName){
 		connect();
 		if (errorMessage==null){
 			try {
 				instance.delete(parent,dirName);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			instance.close();
+		}
+	}
+	
+	//delete all files
+	public void deleteAllFiles(String parent){
+		connect();
+		ArrayList<String> dirs = new ArrayList<String>();
+		if (errorMessage==null){
+			try {
+				dirs= instance.getDir(parent);
+				for (String s : dirs){
+					instance.delete(parent, s);
+					
+				}
+	
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

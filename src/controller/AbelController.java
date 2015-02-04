@@ -275,22 +275,49 @@ public class AbelController {
 		if (!dirPath.exists())
 			createDir(dirPath);
 
-		
-
-		
-		File source = new File("template/defaultJob");
-		fileName = new File("temp/jar/"+dirName+"/jobTemp");
-		
-		if (fileName.exists()) {
-			fileName.delete();
-		}
-		
+		boolean check = checkFile();
+		fileName.createNewFile();
+		List<String> lines = new ArrayList<String>();
+	    String line = null;
 		try {
-			Files.copy(source.toPath(), fileName.toPath());
-		} catch (IOException e) {
+			BufferedReader in = new BufferedReader(new FileReader("template/defaultJob"));
+			//BufferedReader in = new BufferedReader(new FileReader(fileName));
+			//default time
+			setExecutionTime(0,5,0);
+			
+			while ((line = in.readLine()) != null){
+
+			    if (line.contains("cp -R /usit/abel/"))
+			    	line =line.replace("App/", projectFolder +"/"+dirName);
+			    else if (line.contains("cd task"))
+			    	line =line.replace("task", dirName);
+			
+			    else if (line.contains("mv result.txt out.txt"))
+			    	line = line.replace("out.txt", "task"+dirNumber+".txt");
+			    else if (line.contains("cp out.txt /usit/abel/u1/dipeshpr/AppResult"))
+		    	line =line.replace("out.txt","task"+dirNumber+".txt");
+			    
+			    lines.add(line);
+			    lines.add("\n");
+			    
+			}	 
+			in.close();
+			
+			FileWriter changeJob= new FileWriter(fileName.getAbsoluteFile(),false);
+			BufferedWriter out = new BufferedWriter(changeJob);
+			for(String s : lines)
+	        	 out.write(s);
+			out.flush();
+	        out.close();
+			
+			changeJob.close();
+			dirCreated = true;
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}		    
+		
+		
 		
 		dirCreated = true;
 	}
@@ -333,9 +360,9 @@ public class AbelController {
 			    	line =line.replace("task", dirName);
 			
 			    else if (line.contains("mv result.txt out.txt"))
-			    	line = line.replace("out.txt", "result"+dirNumber+".txt");
+			    	line = line.replace("out.txt", "task"+dirNumber+".txt");
 			    else if (line.contains("cp out.txt /usit/abel/u1/dipeshpr/AppResult"))
-		    	line =line.replace("out.txt","result"+dirNumber+".txt");
+		    	line =line.replace("out.txt","task"+dirNumber+".txt");
 			    
 			    lines.add(line);
 			    lines.add("\n");

@@ -36,10 +36,10 @@ public class NorStoreController {
 				String [] taskArray = new String [size];
 				taskArray = taskList.toArray(taskArray);
 				for (int i= 0;i<size;i++){
-					boolean found = remoteController.checkFile("AppResult", taskArray[i]);
+					boolean found = remoteController.checkFile("AppResult", taskArray[i]+".txt");
 				
 					if (found == true)
-						remoteController.copyFileNorStore("AppResult", taskArray[i]);	
+						remoteController.copyFileNorStore("AppResult", taskArray[i]+".txt");	
 				}
 			}
 			

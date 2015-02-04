@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import main.ExecuteCase;
 import controller.AbelController;
@@ -57,7 +58,7 @@ public class ExecutionPage {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		btnDelete = new JButton("Delete files");
+		btnDelete = new JButton("Delete files in Notur");
 		
 		btnDelete.setBounds(214, 173, 161, 23);
 		frame.getContentPane().add(btnDelete);
@@ -99,8 +100,11 @@ public class ExecutionPage {
 					long jobId= remoteController.executeJob("App", AbelController.getDirName());
 					abelController.addInfoExecution(AbelController.getDirName(), AbelController.getExecutionTime(), jobId);
 					AbelController.setDirCreated(false);
-					
-					frame.dispose();
+
+				    // show a joptionpane dialog using showMessageDialog
+				    JOptionPane.showMessageDialog(frame,
+				        "Results for this execution is written in: " + AbelController.getDirName() + ".txt");
+				    frame.dispose();
 					mainPageController.runMainPage();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -138,7 +142,7 @@ public class ExecutionPage {
 		
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				remoteController.delete("App", AbelController.getDirName());
+				remoteController.deleteAllFiles("App");
 				
 			}
 		});

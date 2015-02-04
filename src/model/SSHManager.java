@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import com.jcraft.jsch.Channel;
@@ -26,8 +27,6 @@ import com.jcraft.jsch.SftpException;
 import controller.AbelController;
 
 
-
-
 public class SSHManager {
 
 	 private JSch jschSSHChannel;
@@ -38,10 +37,7 @@ public class SSHManager {
 	  private Session sesConnection;
 	  private Session sesConnection2;
 	  private int intTimeOut;
-	  
-	 
-	  
-	
+
 	  private void doCommonConstructorActions(String userName, 
 		       String password, String connectionIP, String knownHostsFileName)
 		  {
@@ -235,7 +231,7 @@ public class SSHManager {
 		          break;
 		            String str=new String(bt, 0, i);
 		          //displays the output of the command executed.
-		            System.out.print(str);
+		           // System.out.print(str);
 		            if (str.contains("batch job")){
 		            	String line = str;
 				    	String[] details = line.split("\n");
@@ -316,8 +312,6 @@ public class SSHManager {
 	      channelShell.connect();
 	      ps.println("cd "+destParent);
 	      ps.println("ls "+task);
-	      
-	      
 		  
 		  InputStream in=channelShell.getInputStream();
 		  byte[] bt=new byte[1024];
@@ -332,7 +326,7 @@ public class SSHManager {
 	    			  break;
 	    		  String str=new String(bt, 0, i);
 	          //displays the output of the command executed.
-	            System.out.print(str);
+	          //  System.out.print(str);
 	            if (str.contains("No such file or directory"))
 	            		found = false;
 
@@ -403,6 +397,27 @@ public class SSHManager {
 		  
 	  }
 	  
+	  //for deleting all the files at parent folder in the remote server
+	  
+	  public ArrayList<String> getDir(String parent) throws JSchException, IOException{
+		  ArrayList<String> files = new  ArrayList<String>();
+		  Channel channel = sesConnection.openChannel("exec");
+		 
+		  ChannelExec ch = (ChannelExec) channel;
+		  ch.setCommand("cd "+parent+";"+"ls");
+		  
+		  ch.connect();
+
+		  BufferedReader in=new BufferedReader(new InputStreamReader(ch.getInputStream()));
+		   String msg=null;
+		   while((msg=in.readLine())!=null){
+			   files.add(msg);
+		   }
+
+	      return files;
+	  }
+	  
+	  
 	  private static boolean isDir(ChannelSftp sftp, String entry) throws SftpException {
 		    return sftp.stat(entry).isDir();
 		}
@@ -447,6 +462,7 @@ public class SSHManager {
 
 	  public boolean checkJobCompleted(String jobId) throws IOException, JSchException{
 		  boolean completed= true;
+		  int counter =0;
 		  ChannelShell channelShell = (ChannelShell) sesConnection.openChannel("shell");
 			
 		  OutputStream ops = channelShell.getOutputStream();
@@ -468,10 +484,17 @@ public class SSHManager {
 	    			  break;
 	    		  String str=new String(bt, 0, i);
 	          //displays the output of the command executed.
-	            System.out.print(str);
-	            if (str.contains(jobId))
-	            		completed = false;
+	         //   System.out.print(str);
+	            
+	            String line = str;
+		    	String[] details = line.split("\n");
+		    	
+		    	for (String s:details){
+		    		  if (s.contains(jobId)){		    	
+		    			  counter++;
+		    		  } 
 
+		    	}
 	    	  }
 	    	  if(channelShell.isClosed())
 	    	  {
@@ -487,6 +510,9 @@ public class SSHManager {
   
 		        channelShell.disconnect();
 		  	}
+	      if (counter>=3)
+	    	  completed= false;
+	      System.out.println("Completed is " + completed);
 	      return completed;
 	  }
 	  
