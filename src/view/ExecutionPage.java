@@ -129,6 +129,10 @@ public class ExecutionPage {
 					abelController.addInfoExecution(AbelController.getDirName(), AbelController.getExecutionTime(), jobId);
 					AbelController.setDirCreated(false);
 					
+					
+					  // show a joptionpane dialog using showMessageDialog
+				    JOptionPane.showMessageDialog(frame,
+				        "Results for this execution is written in: " + AbelController.getDirName() + ".txt");
 					frame.dispose();
 					mainPageController.runMainPage();
 

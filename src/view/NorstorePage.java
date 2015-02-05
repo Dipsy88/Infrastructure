@@ -12,13 +12,14 @@ import controller.RemoteController;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Norstore {
+public class NorstorePage {
 
 	public JFrame frame;
 	private JButton btnGetResults, btnCancel, btnExit;
 	private MainPageController mainPageController;
 	private RemoteController remoteController;
 	private NorStoreController norStoreController;
+	private JButton btnCheckAllExecuted;
 
 
 	
@@ -26,7 +27,7 @@ public class Norstore {
 	/**
 	 * Create the application.
 	 */
-	public Norstore() {
+	public NorstorePage() {
 		initialize();
 		initComponents();
 		setUpListeners();
@@ -48,18 +49,23 @@ public class Norstore {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		btnGetResults = new JButton("Get all results");
+		btnGetResults = new JButton("Send results to norstore");
 		
-		btnGetResults.setBounds(222, 92, 160, 23);
+		btnGetResults.setBounds(222, 78, 195, 23);
 		frame.getContentPane().add(btnGetResults);
 		
 		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(222, 177, 160, 29);
+		btnCancel.setBounds(222, 200, 195, 29);
 		frame.getContentPane().add(btnCancel);
 		
 		btnExit = new JButton("Exit");
-		btnExit.setBounds(222, 258, 160, 29);
+		btnExit.setBounds(222, 258, 195, 29);
 		frame.getContentPane().add(btnExit);
+		
+		btnCheckAllExecuted = new JButton("Check executed results");
+		
+		btnCheckAllExecuted.setBounds(221, 137, 195, 29);
+		frame.getContentPane().add(btnCheckAllExecuted);
 	}
 	
 	
@@ -75,6 +81,14 @@ public class Norstore {
 				}
 				frame.dispose();
 				mainPageController.runMainPage();
+				
+			}
+		});
+		
+		btnCheckAllExecuted.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				mainPageController.runAllNorstoreResultsPage();
 				
 			}
 		});

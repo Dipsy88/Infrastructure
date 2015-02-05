@@ -6,17 +6,35 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.SSHManager;
+
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSchException;
 
 public class NorStoreController {
 
 			private List<String> taskList = new ArrayList<String>();
 			private RemoteController remoteController;
 			private int size;
+			private  ArrayList<String> files;
 			
+			public ArrayList<String> getFiles() {
+				return files;
+			}
+
+			public void setFiles(ArrayList<String> files) {
+				this.files = files;
+			}
+
 			public void initComponents(){
-				remoteController = new RemoteController();			
+				remoteController = new RemoteController();
+				files = new ArrayList<String>();
 			}
 			
 			public NorStoreController(){
@@ -31,6 +49,7 @@ public class NorStoreController {
 				this.taskList = taskList;
 			}
 	
+			//copy files to Norstore
 			public void copyFiles() throws Exception{
 				checkTasks();
 				String [] taskArray = new String [size];
@@ -42,6 +61,26 @@ public class NorStoreController {
 						remoteController.copyFileNorStore("AppResult", taskArray[i]+".txt");	
 				}
 			}
+			
+			//Get all results
+			  public void getFiles(String parent) throws JSchException, IOException{
+				  remoteController.connectNorStore();
+				 
+					if (remoteController.errorMessageNorStore==null){
+						try {
+							files= remoteController.instance.getFiles(parent);
+							
+				
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} 
+						remoteController.instance.close2();
+					}
+		
+			  }
+			
+			
 			
 			//Write and read the same file
 			public void checkTasks() throws Exception{		
@@ -104,6 +143,8 @@ public class NorStoreController {
 				}		    				
 				size = taskList.size();				
 			}
+			
+			
 			
 			
 

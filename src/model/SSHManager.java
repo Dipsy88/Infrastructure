@@ -455,9 +455,12 @@ public class SSHManager {
 	  }
 	  
 	
-	  public void close()
-	  {
+	  public void close(){
 	     sesConnection.disconnect();
+	  }
+	  
+	  public void close2(){
+	     sesConnection2.disconnect();
 	  }
 
 	  public boolean checkJobCompleted(String jobId) throws IOException, JSchException{
@@ -516,5 +519,23 @@ public class SSHManager {
 	      return completed;
 	  }
 	  
+	//Get all results from NorStore
+	  public ArrayList<String> getFiles(String parent) throws JSchException, IOException{
+		  ArrayList<String> files = new  ArrayList<String>();
+		  Channel channel = sesConnection2.openChannel("exec");
+		 
+		  ChannelExec ch = (ChannelExec) channel;
+		  ch.setCommand("cd "+parent+";"+"ls");
+		  
+		  ch.connect();
+
+		  BufferedReader in=new BufferedReader(new InputStreamReader(ch.getInputStream()));
+		   String msg=null;
+		   while((msg=in.readLine())!=null){
+			   files.add(msg);
+		   }
+
+	      return files;
+	  }
 	  
 }

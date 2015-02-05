@@ -70,12 +70,12 @@ public class MainPage {
 //		frame.getContentPane().setLayout(null);
 		 
 		
-		btnNotur = new JButton("Notur Infrastructure");
+		btnNotur = new JButton("Notur setting up jobs");
 		
 		btnNotur.setBounds(183, 134, 237, 23);
 		frame.getContentPane().add(btnNotur);
 		
-		btnNorStore = new JButton("Norstore Infrastructure");
+		btnNorStore = new JButton("Norstore getting results");
 	
 		btnNorStore.setBounds(183, 205, 237, 23);
 		frame.getContentPane().add(btnNorStore);
@@ -112,7 +112,7 @@ public class MainPage {
 		btnNorStore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				mainPageController.runNorStore();
+				mainPageController.runNorStorePage();
 			}
 		});
 		

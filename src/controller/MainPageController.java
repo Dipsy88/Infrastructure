@@ -2,17 +2,20 @@ package controller;
 
 import java.awt.EventQueue;
 
+import view.AllNorstoreResultsPage;
 import view.ExecutionPage;
 import view.JobPage;
 import view.MainPage;
-import view.Norstore;
+import view.NorstorePage;
+import view.NorstoreResultPage;
 
 public class MainPageController {
 	public MainPage mainPage;
 	public ExecutionPage executionPage;
 	public JobPage jobPage;
-	public Norstore norstore;
-	
+	public NorstorePage norstore;
+	public AllNorstoreResultsPage allNorstoreResultsPage;
+	public NorstoreResultPage norstoreResultPage;
 	
 	public void runMainPage(){
 		EventQueue.invokeLater(new Runnable() {
@@ -40,11 +43,11 @@ public class MainPageController {
 		});
 	}
 	
-	public void runNorStore(){		
+	public void runNorStorePage(){		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {		   
-					norstore = new Norstore();
+					norstore = new NorstorePage();
 					norstore.frame.setVisible(true);
 
 				} catch (Exception e) {
@@ -65,5 +68,31 @@ public class MainPageController {
 				}
 			}
 		});
+	}
+	
+	public void runAllNorstoreResultsPage(){
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					allNorstoreResultsPage = new AllNorstoreResultsPage();
+					allNorstoreResultsPage.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});	
+	}
+	
+	public void runNorstoreResultPage(){
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					norstoreResultPage = new NorstoreResultPage();
+					norstoreResultPage.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});	
 	}
 }

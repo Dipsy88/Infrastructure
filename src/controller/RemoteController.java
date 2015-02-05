@@ -38,6 +38,10 @@ public class RemoteController {
 		
 	}
 	
+	public void connectNorStore(){
+		instance = new SSHManager(userName, password, connectionIP);
+		this.errorMessageNorStore = instance.connectNorStore(userNameNorStore, passwordNorStore, connectionIPNorStore );	
+	}
 	
 	public void sendFiles(String parent, String dirName ){
 		connect();
