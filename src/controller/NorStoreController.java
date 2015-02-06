@@ -66,66 +66,75 @@ public class NorStoreController {
 			  public void getFiles(String parent) throws JSchException, IOException{
 				  remoteController.connectNorStore();
 				 
-					if (remoteController.errorMessageNorStore==null){
-						try {
-							files= remoteController.instance.getFiles(parent);
-							
-				
-						} catch (Exception e) {
+				  if (remoteController.errorMessageNorStore==null){
+					  try {
+						  files= remoteController.instance.getFiles(parent);		
+					  } catch (Exception e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} 
-						remoteController.instance.close2();
-					}
+						  e.printStackTrace();
+					  } 
+					  remoteController.instance.close2();
+				  }
 		
 			  }
-			
-			
-			
-			//Write and read the same file
-			public void checkTasks() throws Exception{		
-				File file = new File("temp/execution/executed.txt");
-				List<String> lines = new ArrayList<String>();
-			    String line = null;
-			    String[] data = new String[100];
-			    
-			    long currentTime = System.currentTimeMillis()/1000;
-			    
-				try {
-					//BufferedReader in = new BufferedReader(new FileReader("template/job.txt"));
-					BufferedReader in = new BufferedReader(new FileReader(file));								 
-					while ((line = in.readLine()) != null){
+			  
+			//Get result 
+			  public ArrayList<String> readFile(String parent, String fileName) throws JSchException, IOException{
+				  ArrayList<String> result = new ArrayList<String>();
+				  remoteController.connectNorStore();
+				 
+				  if (remoteController.errorMessageNorStore==null){
+					  try {
+						  result= remoteController.instance.readFile(parent, fileName);  				
+					  } catch (Exception e) {
+						  // TODO Auto-generated catch block
+						  e.printStackTrace();
+					  } 
+					  remoteController.instance.close2();
+				}
+				  return result;	
+			 }
 
-						if (line.contains("Filename")){
-							lines.add(line);
-							lines.add("\n");
+			//Write and read the same file
+			  public void checkTasks() throws Exception{		
+				  File file = new File("temp/execution/executed.txt");
+				  List<String> lines = new ArrayList<String>();
+				  String line = null;
+				  String[] data = new String[100];
+			    
+				  long currentTime = System.currentTimeMillis()/1000;		    
+				  try {
+					//BufferedReader in = new BufferedReader(new FileReader("template/job.txt"));
+					  BufferedReader in = new BufferedReader(new FileReader(file));								 
+					  while ((line = in.readLine()) != null){
+
+						  if (line.contains("Filename")){
+							  lines.add(line);
+							  lines.add("\n");
 							
-						}else if (line.isEmpty())
-							continue;
+						  }else if (line.isEmpty())
+							  continue;
 						
-						else{
-						
-					    //String[] details = line.split("\t");
-	
-							String[] var = line.split("\t");
+						  else{
+							  String[] var = line.split("\t");
 					
-							long taskTime = Long.parseLong(var[0]);
-							if (taskTime<=currentTime ){
-								boolean completed= remoteController.checkJobCompleted(var[2]);
-								if (completed)
-									taskList.add(var[1]);
-								else {
-									lines.add(line);
-									lines.add("\n");
-								}
-							}
-							else{
-								lines.add(line);
-								lines.add("\n");
-							}
+							  long taskTime = Long.parseLong(var[0]);
+							  if (taskTime<=currentTime ){
+								  boolean completed= remoteController.checkJobCompleted(var[2]);
+								  if (completed)
+									  taskList.add(var[1]);
+								  else {
+									  lines.add(line);
+									  lines.add("\n");
+								  }
+							  }
+							  else{
+								  lines.add(line);
+								  lines.add("\n");
+							  }
 	
-						}
-					}	 
+						  }
+					  	}	 
 					in.close();
 					
 					FileWriter changeJob= new FileWriter(file.getAbsoluteFile(),false);
@@ -135,17 +144,11 @@ public class NorStoreController {
 					out.flush();
 			        out.close();
 					
-					changeJob.close();
-					
+					changeJob.close();			
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}		    				
 				size = taskList.size();				
 			}
-			
-			
-			
-			
-
 }

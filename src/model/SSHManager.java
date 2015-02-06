@@ -39,8 +39,7 @@ public class SSHManager {
 	  private int intTimeOut;
 
 	  private void doCommonConstructorActions(String userName, 
-		       String password, String connectionIP, String knownHostsFileName)
-		  {
+		       String password, String connectionIP, String knownHostsFileName){
 		     jschSSHChannel = new JSch();
 
 		     try
@@ -69,8 +68,7 @@ public class SSHManager {
 		  }
 	
 	  public SSHManager(String userName, String password, 
-			     String connectionIP)
-			  {
+			     String connectionIP){
 			     doCommonConstructorActions(userName, password, 
 			                connectionIP);
 			     intConnectionPort = 22;
@@ -79,8 +77,7 @@ public class SSHManager {
 	  
 	  
 	  public SSHManager(String userName, String password, 
-		     String connectionIP, String knownHostsFileName)
-		  {
+		     String connectionIP, String knownHostsFileName){
 		     doCommonConstructorActions(userName, password, 
 		                connectionIP, knownHostsFileName);
 		     intConnectionPort = 22;
@@ -88,8 +85,7 @@ public class SSHManager {
 		  }
 	
 	  public SSHManager(String userName, String password, String connectionIP, 
-		     String knownHostsFileName, int connectionPort)
-		  {
+		     String knownHostsFileName, int connectionPort){
 		     doCommonConstructorActions(userName, password, connectionIP, 
 		        knownHostsFileName);
 		     intConnectionPort = connectionPort;
@@ -97,16 +93,14 @@ public class SSHManager {
 		  }
 	
 	  public SSHManager(String userName, String password, String connectionIP, 
-		      String knownHostsFileName, int connectionPort, int timeOutMilliseconds)
-		  {
+		      String knownHostsFileName, int connectionPort, int timeOutMilliseconds){
 		     doCommonConstructorActions(userName, password, connectionIP, 
 		         knownHostsFileName);
 		     intConnectionPort = connectionPort;
 		     intTimeOut = timeOutMilliseconds;
 		  }
 
-	  public String connect()
-		  {
+	  public String connect(){
 		     String errorMessage = null;
 		   
 		     try
@@ -129,10 +123,8 @@ public class SSHManager {
 		     return errorMessage;
 		  }
 	  
-	  public String connectNorStore(String userName2, String password2, String connectionIP2)
-	  {
-	     String errorMessage = null;
-	   
+	  public String connectNorStore(String userName2, String password2, String connectionIP2){
+	     String errorMessage = null;	   
 	     try
 	     {
 	        sesConnection2 = jschSSHChannel.getSession(userName2, 
@@ -206,8 +198,7 @@ public class SSHManager {
 //			   String msg=null;
 //			   while((msg=in.readLine())!=null){
 //			    System.out.println(msg);
-//			   }
-//			   
+//			   }			   
 //				ch.disconnect();
 				ChannelShell channelShell = (ChannelShell) sesConnection.openChannel("shell");
 				
@@ -246,7 +237,6 @@ public class SSHManager {
 				    			  System.out.println(Long.valueOf(findingId[3]).longValue());
 				    			  jobId = Long.valueOf(findingId[3]).longValue();
 				    		  }
-
 				    	}
 		            }
 
@@ -297,8 +287,7 @@ public class SSHManager {
 					
 					channelSftp.put(file.getAbsolutePath(), destination+ "/"+ destDir + "/");
 				}
-			}
-		  
+			}	  
 	  }
 	  
 	  //check the files after execution
@@ -318,7 +307,6 @@ public class SSHManager {
 
 	      while(true)
 	      {
-
 	    	  while(in.available()>0)
 	    	  {
 	    		  int i=in.read(bt, 0, 1024);
@@ -329,11 +317,9 @@ public class SSHManager {
 	          //  System.out.print(str);
 	            if (str.contains("No such file or directory"))
 	            		found = false;
-
 	    	  }
 	    	  if(channelShell.isClosed())
 	    	  {
-
 		             break;
 		       }
 	    	  try {
@@ -362,21 +348,16 @@ public class SSHManager {
 			
 		    uploadChannel = (ChannelSftp) channelNotur;
 	        downloadChannel = (ChannelSftp) channelNorStore;
-		    
-			
+	
 			InputStream inputStream = uploadChannel.get(root+"/" + fileName);
 			
-			downloadChannel.put(inputStream,fileName);
-			
-			
+			downloadChannel.put(inputStream,fileName);		
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	  }
-	  
-	  
+	    
 	  public void deleteFiles(ChannelSftp sftp, String oldestBackup) throws SftpException{
 		  if (isDir(sftp, oldestBackup)) {
 		        sftp.cd(oldestBackup);
@@ -416,14 +397,12 @@ public class SSHManager {
 
 	      return files;
 	  }
-	  
-	  
+  
 	  private static boolean isDir(ChannelSftp sftp, String entry) throws SftpException {
 		    return sftp.stat(entry).isDir();
 		}
 	  
-	  public void delete(String parent, String name) throws SftpException{
-		
+	  public void delete(String parent, String name) throws SftpException{	
 		  try {
 				Channel channel = sesConnection.openChannel("sftp");
 				channel.connect();
@@ -437,10 +416,7 @@ public class SSHManager {
 				    deleteFiles(sftpChannel, name);
 				} catch (Exception e) {
 				    System.out.println(name + " not found");
-				}
-				
-				
-				
+				}	
 //				System.out.println("Path is " + sftpChannel.pwd());
 //				sftpChannel.rmdir("a");
 		  } catch (JSchException e) {
@@ -496,12 +472,9 @@ public class SSHManager {
 		    		  if (s.contains(jobId)){		    	
 		    			  counter++;
 		    		  } 
-
 		    	}
 	    	  }
-	    	  if(channelShell.isClosed())
-	    	  {
-
+	    	  if(channelShell.isClosed()){
 		             break;
 		       }
 	    	  try {
@@ -530,12 +503,30 @@ public class SSHManager {
 		  ch.connect();
 
 		  BufferedReader in=new BufferedReader(new InputStreamReader(ch.getInputStream()));
-		   String msg=null;
-		   while((msg=in.readLine())!=null){
+		  String msg=null;
+		  while((msg=in.readLine())!=null){
 			   files.add(msg);
 		   }
 
 	      return files;
 	  }
 	  
+	  //Read result file in Norstore
+	  public ArrayList<String> readFile(String parent, String fileName) throws JSchException, IOException{
+		  ArrayList<String> result = new ArrayList<String>();
+		  Channel channel = sesConnection2.openChannel("exec");
+			 
+		  ChannelExec ch = (ChannelExec) channel;
+		  ch.setCommand("cat " + fileName);
+		  
+		  ch.connect();
+		  BufferedReader in=new BufferedReader(new InputStreamReader(ch.getInputStream()));
+		 
+		  String msg= null;
+		  while((msg=in.readLine())!=null){
+				result.add(msg);
+				System.out.println(msg);
+			}	
+		  return result;
+	  }  
 }

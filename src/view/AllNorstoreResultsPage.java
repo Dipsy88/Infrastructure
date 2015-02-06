@@ -57,6 +57,7 @@ public class AllNorstoreResultsPage {
 	public void initComponents(){
 		norStoreController = new NorStoreController();
 		mainPageController = new MainPageController();
+		
 		try {
 			norStoreController.getFiles("AppResult");
 		} catch (JSchException e) {
@@ -107,21 +108,23 @@ public class AllNorstoreResultsPage {
 	            	btnListTasks.add(task);
 	                panelGrid.add(btnListTasks.get(i));
 	                
-	                btnListTasks.get(i).addActionListener(new ActionListener() {
-	        			public void actionPerformed(ActionEvent e) {
-	        				frame.dispose();
-	        				mainPageController.runNorstoreResultPage();;
-	        			}
-	        		});
+//	                btnListTasks.get(i).addActionListener(new ActionListener() {
+//	                	
+//	                	
+//	        			public void actionPerformed(ActionEvent e) {
+//	        				frame.dispose();
+//	        			//	mainPageController.runNorstoreResultPage(taskLists.get(i));;
+//	        			}
+//	        		});
 	                
-	                
-	                btnListTasks.get(i).addMouseListener(new MouseAdapter() {
-	        			@Override
-	        			public void mouseClicked(MouseEvent e) {
-	        				//frame.dispose();
-	        		            doPop(e);
-	        			}
-	        		});
+//	                
+//	                btnListTasks.get(i).addMouseListener(new MouseAdapter() {
+//	        			@Override
+//	        			public void mouseClicked(MouseEvent e) {
+//	        				//frame.dispose();
+//	        		            doPop(e);
+//	        			}
+//	        		});
 	            }
 	        }
 		
@@ -130,22 +133,8 @@ public class AllNorstoreResultsPage {
 		frame.getContentPane().add(scrollPane);
 		
 	}
-	
-//	private void initialize() {
-//		frame = new JFrame();
-//		frame.setBounds(500, 100, 628, 376);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.getContentPane().setLayout(new GridLayout(5, 5, 4, 4));
-//		for(int i=0;i<taskLists.size();i++)
-//        {
-//            for(int j=1;j<=1;j++)
-//            {
-//                JButton btn=new JButton(String.valueOf(taskLists.get(i).substring(0, taskLists.get(i).lastIndexOf('.')))); // for removing extension
-//                frame.getContentPane().add(btn);
-//            }
-//        }
-//	}
-	
+
+	//To do
 	public void setUpListeners(){
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -166,6 +155,33 @@ public class AllNorstoreResultsPage {
 				frame.dispose();
 			}
 		});
+		
+		for (int i = 0; i < btnListTasks.size(); i++) {		
+			btnListTasks.get(i).addActionListener(new ActionListener() {  	
+				private int id;
+	    		public void actionPerformed(ActionEvent e) {
+	    			frame.dispose();
+	    			mainPageController.runNorstoreResultPage(taskLists.get(id));
+	    			
+	    		}
+	    		private ActionListener init(int var){
+	    			id = var;
+	    			return this;
+	    		}
+	    	}.init(i));
+			
+//			btnListTasks.get(i).addMouseListener(new MouseAdapter() {
+//    			@Override
+//    			public void mouseClicked(MouseEvent e) {
+//    				//frame.dispose();
+//    		            doPop(e);
+//    			}
+//    		});
+			
+			
+		}
+		
+		
 
 	}
 	

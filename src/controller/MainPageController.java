@@ -1,6 +1,8 @@
 package controller;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import view.AllNorstoreResultsPage;
 import view.ExecutionPage;
@@ -83,16 +85,21 @@ public class MainPageController {
 		});	
 	}
 	
-	public void runNorstoreResultPage(){
+	public void runNorstoreResultPage(String fileName){
 		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+			private String file;
+			private Runnable init(String var){
+    			file = var;
+    			return this;
+    		}
+			public void run() {				
 				try {
-					norstoreResultPage = new NorstoreResultPage();
+					norstoreResultPage = new NorstoreResultPage(file);
 					norstoreResultPage.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		});	
+		}.init(fileName));	
 	}
 }
