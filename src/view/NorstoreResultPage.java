@@ -115,7 +115,7 @@ public class NorstoreResultPage {
 		for (String temp : result) {
 			textArea.append(temp);
 			textArea.append("\n");
-			System.out.println(temp);		
+		//	System.out.println(temp);		
 		}
 	}
 	

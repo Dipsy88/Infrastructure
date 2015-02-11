@@ -37,6 +37,7 @@ public class MainPage {
 	
 	private AbelController abelController;
 	private MainPageController mainPageController;
+	private JButton btnChangeDefaultSettings;
 	/**
 	 * Launch the application.
 	 */
@@ -66,29 +67,31 @@ public class MainPage {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JLabel background=new JLabel(new ImageIcon("images/masthead.jpg"));
 		background.setLayout(null);
+		
 		frame.setContentPane(background);
-//		frame.getContentPane().setLayout(null);
-		 
+		frame.getContentPane().setLayout(null);
+		frame.setTitle("Home page");
 		
 		btnNotur = new JButton("Notur setting up jobs");
 		
-		btnNotur.setBounds(183, 134, 237, 23);
+		btnNotur.setBounds(183, 122, 237, 23);
 		frame.getContentPane().add(btnNotur);
 		
-		btnNorStore = new JButton("Norstore getting results");
-	
-		btnNorStore.setBounds(183, 205, 237, 23);
+		btnNorStore = new JButton("Norstore getting results");	
+		btnNorStore.setBounds(183, 179, 237, 23);
 		frame.getContentPane().add(btnNorStore);
 		
-		btnModelbasedTestingEnvironment = new JButton("Model-Based Testing");
-		
+		btnModelbasedTestingEnvironment = new JButton("Model-Based Testing");		
 		btnModelbasedTestingEnvironment.setBounds(183, 62, 237, 23);
 		frame.getContentPane().add(btnModelbasedTestingEnvironment);
 		
-		btnCancel = new JButton("Cancel");
-	
-		btnCancel.setBounds(183, 279, 237, 23);
+		btnCancel = new JButton("Cancel");	
+		btnCancel.setBounds(183, 291, 237, 23);
 		frame.getContentPane().add(btnCancel);
+		
+		btnChangeDefaultSettings = new JButton("Change default settings");
+		btnChangeDefaultSettings.setBounds(183, 232, 237, 29);
+		frame.getContentPane().add(btnChangeDefaultSettings);
 		
 		
 		frame.setResizable(true);

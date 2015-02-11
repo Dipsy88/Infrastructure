@@ -525,7 +525,6 @@ public class SSHManager {
 		  String msg= null;
 		  while((msg=in.readLine())!=null){
 				result.add(msg);
-				System.out.println(msg);
 			}	
 		  return result;
 	  }  

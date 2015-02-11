@@ -170,13 +170,13 @@ public class AllNorstoreResultsPage {
 	    		}
 	    	}.init(i));
 			
-//			btnListTasks.get(i).addMouseListener(new MouseAdapter() {
-//    			@Override
-//    			public void mouseClicked(MouseEvent e) {
-//    				//frame.dispose();
-//    		            doPop(e);
-//    			}
-//    		});
+			btnListTasks.get(i).addMouseListener(new MouseAdapter() {
+    			@Override
+    			public void mouseClicked(MouseEvent e) {
+    				//frame.dispose();
+    		            doPop(e);
+    			}
+    		});
 			
 			
 		}
