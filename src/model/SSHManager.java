@@ -264,31 +264,38 @@ public class SSHManager {
 		  int dirLevel =0;
 			//File[] files = localDirectory.listFiles();			
 			for (File file : files){
-				if (file.isDirectory()){	
-					dirLevel++;
-					if (dirLevel>1){					
-						channelSftp.cd("..");
-					}
-					File newSourcePath = new File(sourcePath+"/"+file.getName());
-					//channelSftp.getHome();	
-
-					channelSftp.cd(destDir);
-					System.out.println(file.getName());
-					channelSftp.mkdir(file.getName());
-					
-					String dest = destination+"/"+destDir;
-					destDir = file.getName();				
-
-					copyFiles(channelSftp, newSourcePath,dest, destDir);	
-					
-					channelSftp.getHome();	
-					destDir = AbelController.getDirName();
-				}else		{		
-					
-					channelSftp.put(file.getAbsolutePath(), destination+ "/"+ destDir + "/");
+				String filename = file.getName();
+				String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
+				
+				String git = "git";
+				
+				if (!extension.equals(git)) {
+					if (file.isDirectory()){	
+						dirLevel++;
+						if (dirLevel>1){					
+							channelSftp.cd("..");
+						}
+						File newSourcePath = new File(sourcePath+"/"+file.getName());
+						//channelSftp.getHome();	
+	
+						channelSftp.cd(destDir);
+						System.out.println(file.getName());
+						channelSftp.mkdir(file.getName());
+						
+						String dest = destination+"/"+destDir;
+						destDir = file.getName();				
+	
+						copyFiles(channelSftp, newSourcePath,dest, destDir);	
+						
+						channelSftp.getHome();	
+						destDir = AbelController.getDirName();
+						}else		{		
+						
+							channelSftp.put(file.getAbsolutePath(), destination+ "/"+ destDir + "/");
+						}	
+					}	
 				}
-			}	  
-	  }
+			}
 	  
 	  //check the files after execution
 	  public boolean checkFile(String destParent, String task) throws SftpException, JSchException, IOException{

@@ -15,6 +15,12 @@ public class RemoteController {
 	SSHManager instance;
 	String errorMessage;
 	
+	//Abel2
+//	String userName = "dipesh";
+//	String password = "Dipesh@77";
+
+
+	
 	//Norstore
 	String userNameNorStore= "dipesh";
 	String passwordNorStore = "Dipesh@77";

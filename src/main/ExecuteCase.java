@@ -2,11 +2,13 @@ package main;
 
 import java.awt.EventQueue;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -35,13 +37,32 @@ public class ExecuteCase {
 	}
 
 	public static String number;
+	public static String fileName;
 	
 	
+	public static String getFileName() {
+		return fileName;
+	}
+	public static void setFileName(String fileName) {
+		ExecuteCase.fileName = fileName;
+	}
 	public static void main(String[] args) throws IOException{
-		number = args[0];
-		execute(number);
+		fileName = args[0];
+		number = args[1];
+		
+		execute(fileName, number);
+		createExecutionFile();
 	}
 	
+	
+	public static void createExecutionFile() throws IOException{
+		File executionFile = new File("finished.txt");			
+		// if file does not exists, then create it
+		if (!executionFile.exists()) {
+			executionFile.createNewFile();
+		}
+
+	}
 	
 	 private static byte[] getFileBytes(File file) throws IOException, 
 	     FileNotFoundException{
@@ -95,8 +116,7 @@ public class ExecuteCase {
 		manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
 		manifest.getMainAttributes().put(Attributes.Name.MAIN_CLASS, ExecuteCase.class.getName());
 	    manifest.getMainAttributes().put(Attributes.Name.CLASS_PATH, ".");
-	   
-	    
+
 	   // random = (int )(Math.random() * 50 + 1);
 		 
 	  //  JarOutputStream target = new JarOutputStream(new FileOutputStream(("temp/jar/task1/jar")+random+".jar"), manifest);
@@ -303,15 +323,19 @@ public class ExecuteCase {
         }
      }
      
-	public static void execute(String number){
-		String pythonScriptPath = "Test cases/src/Main/__init__.py";
+	public static void execute(String fileName, String number){
+		String pythonScriptPath = "TestCases/src/Main/__init__.py";
 
-		ProcessBuilder pb = new ProcessBuilder("python",pythonScriptPath,number);
+		ProcessBuilder pb = new ProcessBuilder("python",fileName,number);
 		try {
 			Process p = pb.start();
+			p.waitFor();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

@@ -220,7 +220,6 @@ public class JobPage {
 		textMin.setText(Integer.toString(job.getExecutionTimeMinute()));
 		textSec.setText(Integer.toString(job.getExecutionTimeSecond()));
 		textMemory.setText(Integer.toString(job.getMemory()));
-		comboBoxMemoryUnit.setSelectedItem(job.getMemoryUnit());
-	
+		comboBoxMemoryUnit.setSelectedItem(job.getMemoryUnit());	
 	}
 }

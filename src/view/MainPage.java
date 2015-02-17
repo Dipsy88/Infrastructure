@@ -33,15 +33,11 @@ public class MainPage {
 
 	public JFrame frame;
 
-	private JButton btnModelbasedTestingEnvironment, btnNotur, btnNorStore, btnCancel;
+	private JButton btnModelbasedTestingEnvironment, btnNotur, btnNorStore, btnCancel, btnChangeDefaultSettings;
 	
 	private AbelController abelController;
 	private MainPageController mainPageController;
-	private JButton btnChangeDefaultSettings;
-	/**
-	 * Launch the application.
-	 */
-	
+
 
 	/**
 	 * Create the application.
@@ -118,6 +114,14 @@ public class MainPage {
 				mainPageController.runNorStorePage();
 			}
 		});
+		
+		btnChangeDefaultSettings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				mainPageController.runDefaultSettingsPage();
+			}
+		});
+		
 		
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

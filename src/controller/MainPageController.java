@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import view.AllNorstoreResultsPage;
 import view.DefaultSettingsPage;
 import view.ExecutionPage;
-import view.ExecutionPage2;
 import view.JobPage;
 import view.MainPage;
 import view.NorstorePage;
@@ -15,7 +14,7 @@ import view.NorstoreResultPage;
 
 public class MainPageController {
 	public MainPage mainPage;
-	public ExecutionPage2 executionPage;
+	public ExecutionPage executionPage;
 	public JobPage jobPage;
 	public NorstorePage norstore;
 	public AllNorstoreResultsPage allNorstoreResultsPage;
@@ -39,7 +38,7 @@ public class MainPageController {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {		   
-					executionPage = new ExecutionPage2();
+					executionPage = new ExecutionPage();
 					executionPage.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -106,7 +105,7 @@ public class MainPageController {
 		}.init(fileName));	
 	}
 	
-	public void runJDefaultSettingsPage(){		
+	public void runDefaultSettingsPage(){		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

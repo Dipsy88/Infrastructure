@@ -339,7 +339,6 @@ public class AbelController {
 			BufferedReader in = new BufferedReader(new FileReader("template/defaultJob"));
 			//BufferedReader in = new BufferedReader(new FileReader(fileName));
 			
-			
 			while ((line = in.readLine()) != null){
 
 			    //String[] details = line.split("\t");
@@ -393,20 +392,16 @@ public class AbelController {
 	
 	
 	//Write and read the same file
-		public void writeJobParam(File fileName,String param) throws Exception{		
+		public void writeJobParam(File fileName,String param1, String param2) throws Exception{		
 			List<String> lines = new ArrayList<String>();
 		    String line = null;
 			try {
 				//BufferedReader in = new BufferedReader(new FileReader("template/job.txt"));
 				BufferedReader in = new BufferedReader(new FileReader(fileName));
-				
-				
+	
 				while ((line = in.readLine()) != null){
-
-				    //String[] details = line.split("\t");
-	   	
 					if (line.contains("java -jar jar1.jar"))
-						line =line.replace("jar1.jar","jar1.jar "+param);				    	
+						line =line.replace("jar1.jar","jar1.jar '"+ param1 + "' '" +param2 + "'");				    	
 		    
 				    lines.add(line);
 				    lines.add("\n");
@@ -421,13 +416,11 @@ public class AbelController {
 				out.flush();
 		        out.close();
 				
-				changeJob.close();
-				
+				changeJob.close();			
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}		    
-			
+			}		    		
 		}
 		
 		// write execution info in another file to read

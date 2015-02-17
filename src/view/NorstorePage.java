@@ -22,8 +22,6 @@ public class NorstorePage {
 	private JButton btnCheckAllExecuted;
 
 
-	
-
 	/**
 	 * Create the application.
 	 */

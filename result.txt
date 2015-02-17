@@ -1,3 +1,5 @@
 Test case number                                  Result 
 0                                                 Pass
 1                                                 Fail
+2                                                 Pass
+3                                                 Pass

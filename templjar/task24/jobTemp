@@ -1,0 +1,27 @@
+#!/bin/bash
+# Job name:
+#SBATCH --job-name=jobTemp
+#
+#Project:
+#SBATCH --account=uio
+#
+#Wall clock limit
+#SBATCH --time=00:05:00
+#
+#Max memory usage:
+#SBATCH --mem-per-cpu=700M
+
+source /cluster/bin/jobsetup
+module purge  # clear any inherited modules
+
+## Copy input files to the work directory
+cp -R /usit/abel/u1/dipeshpr/App/task24 $SCRATCH
+
+# DO some work
+cd $SCRATCH
+cd task24
+chmod +x jar1.jar
+java -jar jar1.jar 1
+sleep 8
+mv result.txt task24.txt
+cp task24.txt /usit/abel/u1/dipeshpr/AppResult

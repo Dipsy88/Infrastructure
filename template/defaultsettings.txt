@@ -1,1 +1,1 @@
-counter: 20
+execution folder=/Users/Dipesh/Documents/workspace/TestCases

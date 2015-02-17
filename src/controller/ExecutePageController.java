@@ -21,23 +21,22 @@ public class ExecutePageController {
 	public void createJar() throws IOException{		
 		if (!AbelController.isDirCreated()){
 			AbelController abelController = new AbelController();
-			try {
-				
+			try {			
 				abelController.copyJob("App");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
+		}	
 		executeCase.createJarFile(AbelController.getDirPath());
 		executeCase.extractJar(AbelController.getDirPath());
 	}
 	
-	public void copyProgram() throws IOException{
-		File source = new File("Test cases");
-		String destTemp = AbelController.getDirPath().toString();
-		File dest = new File(destTemp+ "/"+ source);
+	public void copyProgram(String executionFolder) throws IOException{
+		String lastWord = executionFolder.substring(executionFolder.lastIndexOf("/")+1);
+		File source = new File(executionFolder);
+		String destTemp = AbelController.getDirPath().toString()+"/"+lastWord;
+		File dest = new File(destTemp);
 		
 		copyDirectory(source, dest);	
 	}
