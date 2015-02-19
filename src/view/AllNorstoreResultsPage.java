@@ -180,9 +180,12 @@ public class AllNorstoreResultsPage {
 			
 			
 		}
-		
-		
 
+	}
+	
+	public void popUpListeners(){
+		
+		
 	}
 	
 	private void doPop(MouseEvent e){

@@ -1,2 +1,0 @@
-Test case number                                  Result 
-1                                                 Pass

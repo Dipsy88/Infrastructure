@@ -425,7 +425,6 @@ public class SSHManager {
 				    System.out.println(name + " not found");
 				}	
 //				System.out.println("Path is " + sftpChannel.pwd());
-//				sftpChannel.rmdir("a");
 		  } catch (JSchException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

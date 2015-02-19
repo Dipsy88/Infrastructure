@@ -81,7 +81,7 @@ public class MainPage {
 		btnModelbasedTestingEnvironment.setBounds(183, 62, 237, 23);
 		frame.getContentPane().add(btnModelbasedTestingEnvironment);
 		
-		btnCancel = new JButton("Cancel");	
+		btnCancel = new JButton("Exit");	
 		btnCancel.setBounds(183, 291, 237, 23);
 		frame.getContentPane().add(btnCancel);
 		

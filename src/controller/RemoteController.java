@@ -103,8 +103,7 @@ public class RemoteController {
 			try {
 				dirs= instance.getDir(parent);
 				for (String s : dirs){
-					instance.delete(parent, s);
-					
+					instance.delete(parent, s);					
 				}
 	
 			} catch (Exception e) {
