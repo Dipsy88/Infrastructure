@@ -17,7 +17,7 @@ public class RemoteController {
 	
 	//Abel2
 //	String userName = "dipesh";
-//	String password = "Dipesh@77";
+//	String password = "Rupesh@77";
 
 
 	

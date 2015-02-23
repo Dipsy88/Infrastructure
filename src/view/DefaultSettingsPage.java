@@ -24,6 +24,8 @@ public class DefaultSettingsPage {
 	private DefaultSettings defaultSettings;
 	private DefaultSettingsController defaultSettingsController;
 	private MainPageController mainPageController;
+	private JTextField textProject;
+	private JTextField textAccount;
 
 	/**
 	 * Launch the application.
@@ -58,34 +60,52 @@ public class DefaultSettingsPage {
 		frame.setTitle("Default settings");
 		
 		textExecutionFolder = new JTextField();
-		textExecutionFolder.setBounds(174, 63, 403, 28);
+		textExecutionFolder.setBounds(238, 63, 364, 28);
 		frame.getContentPane().add(textExecutionFolder);
 		textExecutionFolder.setColumns(10);
 		
-		JLabel lblCurrentFolder = new JLabel("Execution folder:");
+		JLabel lblCurrentFolder = new JLabel("Execution folder");
 		lblCurrentFolder.setBounds(36, 69, 126, 16);
 		frame.getContentPane().add(lblCurrentFolder);
 		
 		btnChangeFolder = new JButton("Change execution folder");		
-		btnChangeFolder.setBounds(357, 149, 220, 29);
+		btnChangeFolder.setBounds(28, 133, 220, 29);
 		frame.getContentPane().add(btnChangeFolder);
 		
 		btnSave = new JButton("Save");		
-		btnSave.setBounds(29, 279, 117, 29);
+		btnSave.setBounds(28, 296, 117, 29);
 		frame.getContentPane().add(btnSave);
 		
 		btnCancel = new JButton("Cancel");		
-		btnCancel.setBounds(235, 279, 117, 29);
+		btnCancel.setBounds(266, 296, 117, 29);
 		frame.getContentPane().add(btnCancel);
 		
 		btnExit = new JButton("Exit");		
-		btnExit.setBounds(460, 279, 117, 29);
+		btnExit.setBounds(485, 296, 117, 29);
 		frame.getContentPane().add(btnExit);
 		
 		btnClearFolder = new JButton("Clear execution folder");
 	
-		btnClearFolder.setBounds(360, 207, 217, 29);
+		btnClearFolder.setBounds(384, 133, 217, 29);
 		frame.getContentPane().add(btnClearFolder);
+		
+		JLabel lblProject = new JLabel("Project for job");
+		lblProject.setBounds(36, 194, 110, 16);
+		frame.getContentPane().add(lblProject);
+		
+		JLabel lblNewLabel = new JLabel("Account to execute job");
+		lblNewLabel.setBounds(36, 248, 179, 16);
+		frame.getContentPane().add(lblNewLabel);
+		
+		textProject = new JTextField();
+		textProject.setBounds(238, 188, 364, 28);
+		frame.getContentPane().add(textProject);
+		textProject.setColumns(10);
+		
+		textAccount = new JTextField();
+		textAccount.setBounds(238, 242, 364, 28);
+		frame.getContentPane().add(textAccount);
+		textAccount.setColumns(10);
 	}
 	
 	public void setUpListeners(){
